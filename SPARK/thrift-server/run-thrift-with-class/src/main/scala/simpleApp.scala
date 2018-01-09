@@ -5,7 +5,7 @@ import scala.math.random
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql._
 
-object sparkGM extends App {
+object simpleApp extends App {
    val spark = SparkSession
       .builder
       .appName("Spark Pi")
