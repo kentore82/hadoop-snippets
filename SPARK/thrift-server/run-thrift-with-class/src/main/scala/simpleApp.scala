@@ -6,19 +6,18 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql._
 
 object simpleApp extends App {
-   val spark = SparkSession
+  val spark = SparkSession
       .builder
-      .appName("Spark Pi")
-      .getOrCreate()
-    val slices = if (args.length > 0) args(0).toInt else 2
-    val n = math.min(100000L * slices, Int.MaxValue).toInt // avoid overflow
-    val count = spark.sparkContext.parallelize(1 until n, slices).map { i =>
-      val x = random * 2 - 1
-      val y = random * 2 - 1
-      if (x*x + y*y <= 1) 1 else 0
-    }.reduce(_ + _)
-    println(s"Pi is roughly ${4.0 * count / (n - 1)}")
-    spark.stop()
+      .appName("Spark DataFrame")
+      .getOrCreate().enableHiveSupport()
+
+  val testDF = Seq((52.1,11.3),(39.3,11.2),(44.3,22.4)).toDF("lat","lon")
+
+  testDF.createOrReplaceTempView("test")
+  
+  testDF.show()
+    
+  spark.stop()
   
   
 
