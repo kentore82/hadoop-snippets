@@ -2,36 +2,21 @@
 
 Start a spark-shell: `spark-shell --conf spark.sql.hive.thriftServer.singleSession=true`
 
-## take 1
 ```
 import org.apache.spark.sql.hive.thriftserver._
 import org.apache.spark.sql.hive.HiveContext
 
 val hiveContext = new HiveContext(sc)
 
-val myDF = spark.read(...)
 
-myDF.createOrReplaceTempView("testtable")
+import spark.implicits._
+
+val testDF = Seq((52.1,11.3),(39.3,11.2),(44.3,22.4)).toDF("lat","lon")
+testDF.createOrReplaceTempView("testdf")
+
 hiveContext.setConf("hive.server2.thrift.port","10015")
 HiveThriftServer2.startWithContext(hiveContext)
 
-```
-
-## take 2
-```
-import org.apache.spark.sql.hive._
-import org.apache.spark.sql.hive.thriftserver._
-
-import org.apache.spark.sql._
-
-val hiveContext = new HiveContext(SparkContext.getOrCreate())
-hiveContext.setConf("hive.server2.thrift.port","10015")
-
-HiveThriftServer2.startWithContext(hiveContext)
-
-val likesDF = hiveContext.parquetFile("/Users/cfregly/workspace-fluxcapacitor/pipeline/datasets/likes.parquet")
-
-likesDF.registerTempTable("likes_temp")
 ```
 
 Connect: `beeline -u jdbc:hive2://<hostname>:10015/default`
