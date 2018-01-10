@@ -1,7 +1,4 @@
 # Start Spark Thrift server on temp table
-
-MAJOR BREAK:
-
 UDFs defined in spark temp tables are available from Spark Thrift server Beeline shell!!!! Should get GeoMesa to work
 
 
